@@ -1,6 +1,11 @@
+/* CUSTOM.CSS */
+
 .jumbotron {
 	background-color: #333;
 	color: #eee;
+	background-image: url('https://live.art.istic.net/images/diaspora/diaspora.jpg');
+    background-position: center;
+    background-size: cover;
 }
 
 .jumbotron pre {
