@@ -464,9 +464,12 @@ class BootstrapMediaWikiTemplate extends QuickTemplate {
 		} else {
 			$article = new Article($pageTitle);
 			$wgParserOptions = new ParserOptions($wgUser);
-			// get the text as static wiki text, but with already expanded templates,
-			// which also e.g. to use {{#dpl}} (DPL third party extension) for dynamic menus.
-			$parserOutput = $wgParser->preprocess($article->getRawText(), $pageTitle, $wgParserOptions );
+			$wikiPage = $article->getPage();
+			$revision = $wikiPage->getRevision();
+			$content = $revision->getContent( Revision::RAW );
+			$text = ContentHandler::getContentText( $content );
+
+			$parserOutput = $wgParser->parse($text, $pageTitle, $wgParserOptions);
 			return $parserOutput;
 		}
 	}
@@ -479,7 +482,13 @@ class BootstrapMediaWikiTemplate extends QuickTemplate {
 		} else {
 			$article = new Article($pageTitle);
 			$wgParserOptions = new ParserOptions($wgUser);
-			$parserOutput = $wgParser->parse($article->getRawText(), $pageTitle, $wgParserOptions);
+
+			$wikiPage = $article->getPage();
+			$revision = $wikiPage->getRevision();
+			$content = $revision->getContent( Revision::RAW );
+			$text = ContentHandler::getContentText( $content );
+
+			$parserOutput = $wgParser->parse($text, $pageTitle, $wgParserOptions);
 			echo $parserOutput->getText();
 		}
 	}
